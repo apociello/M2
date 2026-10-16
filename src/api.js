@@ -1,4 +1,5 @@
 const BASE_URL = 'https://api.chess.com/pub/player';
+const MONTHS_TO_LOAD = 2; // "last 30 days" can span the current and the previous month
 
 function messageFor(status) {
   if (status === 404) return 'Player not found on Chess.com.';
@@ -30,8 +31,30 @@ function getStats(username) {
   return fetchJson(`${BASE_URL}/${encodeURIComponent(username)}/stats`);
 }
 
+// Returns the list of monthly archive URLs, e.g. '.../games/2026/10'
+async function getArchives(username) {
+  const data = await fetchJson(`${BASE_URL}/${encodeURIComponent(username)}/games/archives`);
+  return data.archives;
+}
+
+async function getMonthGames(archiveUrl) {
+  const data = await fetchJson(archiveUrl);
+  return data.games;
+}
+
+async function getRecentGames(username) {
+  // Sequential on purpose: we need the archive list to know which months to ask for
+  const archives = await getArchives(username);
+  const months = await Promise.all(archives.slice(-MONTHS_TO_LOAD).map(getMonthGames));
+  return months.flat();
+}
+
 export async function getPlayer(username) {
-  // Independent requests: both start at once instead of waiting for each other
-  const [profile, stats] = await Promise.all([getProfile(username), getStats(username)]);
-  return { profile, stats };
+  // Independent requests: all start at once instead of waiting for each other
+  const [profile, stats, games] = await Promise.all([
+    getProfile(username),
+    getStats(username),
+    getRecentGames(username),
+  ]);
+  return { profile, stats, games };
 }

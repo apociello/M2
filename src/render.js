@@ -1,7 +1,13 @@
 // Everything that touches the DOM. Text always goes through textContent: it comes from the API.
 
+import { RECENT_DAYS } from './logic.js';
+
 const statusBox = document.querySelector('#status');
 const results = document.querySelector('#results');
+
+const MAX_GAMES_LISTED = 20;
+const OUTCOME_LABELS = { win: 'W', draw: 'D', loss: 'L' };
+const gameDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
 function el(tag, className = '', text = '') {
   const node = document.createElement(tag);
@@ -42,7 +48,38 @@ function ratingsList(ratings) {
   return list;
 }
 
-export function renderPlayer(profile, ratings) {
+function gameRow(game) {
+  const link = el('a', 'game');
+  link.href = game.url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.append(
+    el('span', `result result-${game.outcome}`, OUTCOME_LABELS[game.outcome]),
+    el('span', 'game-opponent', `${game.opponent.username} (${game.opponent.rating})`),
+    el('span', 'game-meta', `${game.color} · ${game.timeClass}`),
+    el('time', 'game-meta', gameDate.format(game.playedAt)),
+  );
+  const item = el('li');
+  item.append(link);
+  return item;
+}
+
+function gamesSection(games) {
+  const section = el('section', 'games-section');
+
+  if (games.length === 0) {
+    section.append(el('p', 'empty', `No games in the last ${RECENT_DAYS} days.`));
+    return section;
+  }
+
+  const shown = games.slice(0, MAX_GAMES_LISTED);
+  const list = el('ol', 'games');
+  list.append(...shown.map(gameRow));
+  section.append(el('h3', '', `Last ${RECENT_DAYS} days · showing ${shown.length} of ${games.length} games`), list);
+  return section;
+}
+
+export function renderPlayer(profile, ratings, games) {
   clearStatus();
 
   const card = el('article', 'player');
@@ -66,6 +103,7 @@ export function renderPlayer(profile, ratings) {
   if (profile.name) card.append(el('p', '', profile.name));
   card.append(el('p', '', `${profile.followers} followers`), link);
   if (ratings.length > 0) card.append(ratingsList(ratings));
+  card.append(gamesSection(games));
 
   results.replaceChildren(card);
 }
