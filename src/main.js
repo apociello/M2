@@ -1,6 +1,6 @@
 import './style.css';
 import { getPlayer } from './api.js';
-import { prepareGames, summarizeRatings } from './logic.js';
+import { buildReport, prepareGames, summarizeRatings } from './logic.js';
 import { renderError, renderLoading, renderPlayer } from './render.js';
 
 const form = document.querySelector('#search-form');
@@ -10,7 +10,8 @@ async function scout(username) {
   renderLoading(username);
   try {
     const { profile, stats, games } = await getPlayer(username);
-    renderPlayer(profile, summarizeRatings(stats), prepareGames(games, username));
+    const recentGames = prepareGames(games, username);
+    renderPlayer(profile, summarizeRatings(stats), recentGames, buildReport(recentGames));
   } catch (error) {
     renderError(error.message);
   }

@@ -48,6 +48,39 @@ function ratingsList(ratings) {
   return list;
 }
 
+function outcomeBar({ win, draw, loss }) {
+  const total = win + draw + loss;
+  const bar = el('div', 'outcome-bar');
+  const segments = Object.entries({ win, draw, loss })
+    .filter(([, count]) => count > 0)
+    .map(([outcome, count]) => {
+      const segment = el('span', `segment result-${outcome}`, String(count));
+      segment.style.width = `${(count / total) * 100}%`;
+      return segment;
+    });
+  bar.append(...segments);
+  return bar;
+}
+
+function tile(label, value) {
+  const box = el('div', 'tile');
+  box.append(el('span', 'tile-label', label), el('strong', 'tile-value', value));
+  return box;
+}
+
+function reportSection(report) {
+  const tiles = el('div', 'tiles');
+  tiles.append(
+    tile('Games', String(report.total)),
+    tile('Win rate', `${report.winRate}%`),
+    tile('As white', `${report.whiteWinRate}%`),
+    tile('As black', `${report.blackWinRate}%`),
+  );
+  const section = el('section', 'report');
+  section.append(el('h3', '', `Last ${RECENT_DAYS} days`), outcomeBar(report.counts), tiles);
+  return section;
+}
+
 function gameRow(game) {
   const link = el('a', 'game');
   link.href = game.url;
@@ -65,21 +98,15 @@ function gameRow(game) {
 }
 
 function gamesSection(games) {
-  const section = el('section', 'games-section');
-
-  if (games.length === 0) {
-    section.append(el('p', 'empty', `No games in the last ${RECENT_DAYS} days.`));
-    return section;
-  }
-
   const shown = games.slice(0, MAX_GAMES_LISTED);
   const list = el('ol', 'games');
   list.append(...shown.map(gameRow));
-  section.append(el('h3', '', `Last ${RECENT_DAYS} days · showing ${shown.length} of ${games.length} games`), list);
+  const section = el('section', 'games-section');
+  section.append(el('h3', '', `Recent games · ${shown.length} of ${games.length}`), list);
   return section;
 }
 
-export function renderPlayer(profile, ratings, games) {
+export function renderPlayer(profile, ratings, games, report) {
   clearStatus();
 
   const card = el('article', 'player');
@@ -103,7 +130,11 @@ export function renderPlayer(profile, ratings, games) {
   if (profile.name) card.append(el('p', '', profile.name));
   card.append(el('p', '', `${profile.followers} followers`), link);
   if (ratings.length > 0) card.append(ratingsList(ratings));
-  card.append(gamesSection(games));
+  if (games.length === 0) {
+    card.append(el('p', 'empty', `No games in the last ${RECENT_DAYS} days.`));
+  } else {
+    card.append(reportSection(report), gamesSection(games));
+  }
 
   results.replaceChildren(card);
 }
