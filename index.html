@@ -10,6 +10,14 @@
   <main class="container">
     <h1>Chess Scout</h1>
     <p>Know your opponent before the first move.</p>
+
+    <form id="search-form" class="search">
+      <input id="username" type="text" placeholder="Chess.com username, e.g. hikaru" autocomplete="off">
+      <button type="submit">Scout</button>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="results"></section>
   </main>
 </body>
 </html>
