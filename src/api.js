@@ -22,6 +22,16 @@ async function fetchJson(url) {
   return response.json();
 }
 
-export function getProfile(username) {
+function getProfile(username) {
   return fetchJson(`${BASE_URL}/${encodeURIComponent(username)}`);
+}
+
+function getStats(username) {
+  return fetchJson(`${BASE_URL}/${encodeURIComponent(username)}/stats`);
+}
+
+export async function getPlayer(username) {
+  // Independent requests: both start at once instead of waiting for each other
+  const [profile, stats] = await Promise.all([getProfile(username), getStats(username)]);
+  return { profile, stats };
 }

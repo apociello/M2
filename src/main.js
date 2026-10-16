@@ -1,6 +1,7 @@
 import './style.css';
-import { getProfile } from './api.js';
-import { renderError, renderLoading, renderProfile } from './render.js';
+import { getPlayer } from './api.js';
+import { summarizeRatings } from './logic.js';
+import { renderError, renderLoading, renderPlayer } from './render.js';
 
 const form = document.querySelector('#search-form');
 const usernameInput = document.querySelector('#username');
@@ -8,8 +9,8 @@ const usernameInput = document.querySelector('#username');
 async function scout(username) {
   renderLoading(username);
   try {
-    const profile = await getProfile(username);
-    renderProfile(profile);
+    const { profile, stats } = await getPlayer(username);
+    renderPlayer(profile, summarizeRatings(stats));
   } catch (error) {
     renderError(error.message);
   }

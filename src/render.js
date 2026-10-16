@@ -27,7 +27,22 @@ function clearStatus() {
   statusBox.textContent = '';
 }
 
-export function renderProfile(profile) {
+function ratingsList(ratings) {
+  const list = el('ul', 'ratings');
+  const items = ratings.map(({ timeClass, rating, best }) => {
+    const item = el('li', 'rating');
+    item.append(
+      el('span', 'rating-label', timeClass),
+      el('strong', 'rating-value', String(rating)),
+    );
+    if (best) item.append(el('span', 'rating-best', `best ${best}`));
+    return item;
+  });
+  list.append(...items);
+  return list;
+}
+
+export function renderPlayer(profile, ratings) {
   clearStatus();
 
   const card = el('article', 'player');
@@ -50,6 +65,7 @@ export function renderProfile(profile) {
   card.append(heading);
   if (profile.name) card.append(el('p', '', profile.name));
   card.append(el('p', '', `${profile.followers} followers`), link);
+  if (ratings.length > 0) card.append(ratingsList(ratings));
 
   results.replaceChildren(card);
 }
