@@ -1,3 +1,5 @@
+import { readCache, writeCache } from './cache.js';
+
 const BASE_URL = 'https://api.chess.com/pub/player';
 const MONTHS_TO_LOAD = 2; // "last 30 days" can span the current and the previous month
 
@@ -9,6 +11,9 @@ function messageFor(status) {
 
 // The only place that calls fetch, so every request is checked the same way
 async function fetchJson(url) {
+  const cached = readCache(url);
+  if (cached) return cached;
+
   let response;
   try {
     response = await fetch(url);
@@ -20,7 +25,9 @@ async function fetchJson(url) {
   if (!response.ok) {
     throw new Error(messageFor(response.status));
   }
-  return response.json();
+  const data = await response.json();
+  writeCache(url, data);
+  return data;
 }
 
 function getProfile(username) {
