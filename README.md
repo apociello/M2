@@ -2,6 +2,8 @@
 
 A Chess.com player scouting app built with Vite and vanilla JavaScript.
 
+🔗 [Live Demo](https://m2-silk.vercel.app/)
+
 ## Features
 
 - Search any Chess.com player by username
