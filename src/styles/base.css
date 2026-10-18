@@ -1,0 +1,43 @@
+/* Reset, colour palette and shared text styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #1f1d1a; /* page background */
+  --surface: #2b2926; /* cards */
+  --surface-2: #34312d; /* inputs, rating boxes, hover */
+  --border: #3d3a35;
+  --text: #ece9e3;
+  --muted: #a39e95; /* secondary text */
+  --accent: #81b64c; /* Chess.com green: button, links, wins */
+  --accent-text: #1b1a17; /* text on top of the green */
+  --draw: #8d887f;
+  --loss: #e0654d; /* losses and errors */
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}

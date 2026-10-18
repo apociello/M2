@@ -1,0 +1,114 @@
+/* Player card */
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.player-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.player-name {
+  font-size: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.title-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #7c2929;
+  color: #fff;
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+
+.profile-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+/* Ratings & report tiles */
+.ratings,
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.tiles {
+  margin-top: 0.75rem;
+}
+
+.rating,
+.tile {
+  display: flex;
+  flex-direction: column;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.625rem;
+}
+
+.rating {
+  background: var(--surface-2);
+}
+
+.tile {
+  border: 1px solid var(--border);
+}
+
+.rating-label,
+.tile-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rating-value,
+.tile-value {
+  font-size: 1.35rem;
+}
+
+.rating-best {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* W/D/L bar */
+.outcome-bar {
+  display: flex;
+  height: 1.625rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.segment {
+  display: grid;
+  place-items: center;
+  min-width: 1.625rem;
+}

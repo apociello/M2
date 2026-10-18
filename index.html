@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess Scout</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-  <main class="container">
-    <h1>Chess Scout</h1>
-    <p>Know your opponent before the first move.</p>
+  <header class="site-header">
+    <h1 class="logo"><span class="logo-icon" aria-hidden="true">♞</span> Chess Scout</h1>
+    <p class="tagline">Know your opponent before the first move.</p>
+  </header>
 
+  <main class="container">
     <form id="search-form" class="search">
       <input id="username" type="text" placeholder="Chess.com username, e.g. hikaru" autocomplete="off">
       <button type="submit">Scout</button>
@@ -19,5 +22,9 @@
     <p id="status" class="status" role="status" aria-live="polite"></p>
     <section id="results"></section>
   </main>
+
+  <footer class="site-footer">
+    Data from the <a href="https://www.chess.com/news/view/published-data-api" target="_blank" rel="noopener">Chess.com Published-Data API</a>
+  </footer>
 </body>
 </html>

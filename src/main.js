@@ -1,4 +1,4 @@
-import './style.css';
+import './styles/index.css';
 import { getPlayer } from './api.js';
 import { buildReport, prepareGames, summarizeRatings } from './logic.js';
 import { renderError, renderLoading, renderPlayer } from './render.js';

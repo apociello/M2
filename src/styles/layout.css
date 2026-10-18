@@ -1,0 +1,106 @@
+/* Header & footer */
+.site-header {
+  padding: 2.5rem 1rem 0.5rem;
+  text-align: center;
+}
+
+.logo {
+  font-size: 2.5rem;
+}
+
+.logo-icon {
+  color: var(--accent);
+}
+
+.tagline {
+  color: var(--muted);
+}
+
+.site-footer {
+  margin-top: auto; /* pushes the footer to the bottom on short pages */
+  padding: 1.5rem 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Search */
+.search {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-2);
+  color: inherit;
+  font: inherit;
+}
+
+.search button {
+  padding: 0.625rem 1.5rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Status: loading & error */
+.status {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.status:empty {
+  display: none;
+}
+
+.status-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+}
+
+.status-error {
+  border: 1px solid var(--loss);
+  color: var(--loss);
+}
+
+/* A circle with one coloured side, rotating */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -18,7 +18,7 @@ function el(tag, className = '', text = '') {
 
 export function renderLoading(username) {
   statusBox.className = 'status status-loading';
-  statusBox.textContent = `Scouting ${username}…`;
+  statusBox.replaceChildren(el('span', 'spinner'), `Scouting ${username}…`);
   results.replaceChildren();
 }
 
@@ -106,29 +106,38 @@ function gamesSection(games) {
   return section;
 }
 
-export function renderPlayer(profile, ratings, games, report) {
-  clearStatus();
-
-  const card = el('article', 'player');
+// Avatar on the left, name and details on the right
+function playerHeader(profile) {
+  const header = el('header', 'player-head');
 
   if (profile.avatar) {
     const avatar = el('img', 'avatar');
     avatar.src = profile.avatar;
     avatar.alt = '';
-    card.append(avatar);
+    header.append(avatar);
   }
 
-  const heading = el('h2', '', profile.username);
+  const heading = el('h2', 'player-name', profile.username);
   if (profile.title) heading.prepend(el('span', 'title-badge', profile.title), ' ');
 
-  const link = el('a', '', 'View on Chess.com');
+  const link = el('a', 'profile-link', 'View on Chess.com ↗');
   link.href = profile.url;
   link.target = '_blank';
   link.rel = 'noopener';
 
-  card.append(heading);
-  if (profile.name) card.append(el('p', '', profile.name));
-  card.append(el('p', '', `${profile.followers} followers`), link);
+  const info = el('div');
+  info.append(heading);
+  if (profile.name) info.append(el('p', 'muted', profile.name));
+  info.append(el('p', 'muted', `${profile.followers} followers`), link);
+  header.append(info);
+  return header;
+}
+
+export function renderPlayer(profile, ratings, games, report) {
+  clearStatus();
+
+  const card = el('article', 'player');
+  card.append(playerHeader(profile));
   if (ratings.length > 0) card.append(ratingsList(ratings));
   if (games.length === 0) {
     card.append(el('p', 'empty', `No games in the last ${RECENT_DAYS} days.`));
